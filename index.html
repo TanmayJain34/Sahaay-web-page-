@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SAHAAY Civic Issue Reporter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Page Title -->
+    <h1 class="page-title">Report Civic Issue</h1>
+
+    <!-- Issue Options -->
+    <div class="issue-options" id="issue-options">
+      <button class="issue-btn blue" data-issue="pothole">
+        <span class="icon">🕳️</span> Report Pothole
+      </button>
+      <button class="issue-btn green" data-issue="streetlight">
+        <span class="icon">💡</span> Report Street Light
+      </button>
+      <button class="issue-btn gray" data-issue="garbage">
+        <span class="icon">🗑️</span> Report Garbage
+      </button>
+    </div>
+
+    <!-- Report Form (hidden by default) -->
+    <form id="report-form" class="glass-card hidden">
+      <h2 id="form-title"></h2>
+      <div class="form-group">
+        <label>Severity</label>
+        <select id="severity">
+          <option value="Small">Small</option>
+          <option value="Medium">Medium</option>
+          <option value="Dangerous">Dangerous</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Additional Comments</label>
+        <input type="text" id="comments" placeholder="E.g., location details, traffic impact">
+      </div>
+      <div class="form-group">
+        <label>GPS Location</label>
+        <input type="text" id="location" placeholder="Lat, Lon (Auto-filled / enter manually)">
+        <button id="autofill-btn" type="button">Auto-fill Location</button>
+      </div>
+      <div class="form-group">
+        <label>Upload Photo</label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
+      <button type="submit" class="submit-btn">Submit Report</button>
+      <button type="button" class="back-btn" id="back-btn">← Back</button>
+    </form>
+
+    <!-- Report Tracker (hidden by default) -->
+    <div id="tracker" class="glass-card hidden">
+      <h2>Track Your Report</h2>
+      <div class="ticket-id" id="ticket-id"></div>
+      <div class="timeline">
+        <div class="timeline-step">
+          <span class="step-icon">✔️</span>
+          <span>Submitted</span>
+          <span id="submitted-time"></span>
+        </div>
+        <div class="timeline-step">
+          <span class="step-icon">⚙️</span>
+          <span>In Progress</span>
+          <span id="progress-time"></span>
+        </div>
+        <div class="timeline-step resolved">
+          <span class="step-icon">🏆</span>
+          <span>Resolved</span>
+          <span id="resolved-time"></span>
+        </div>
+      </div>
+      <p class="update-msg">
+        You will receive updates about your report status.
+      </p>
+      <button type="button" class="back-btn" id="back-home-btn">← Home</button>
+    </div>
+  </div>
+  <script async src="main.js"></script>
+</body>
+</html>
