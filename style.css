@@ -1,146 +1,132 @@
-    body {
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
   margin: 0;
-  padding: 0;
-  background: linear-gradient(120deg, #82e0fa, #bfffe2 60%, #c6b9fb 100%);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
   min-height: 100vh;
-  font-family: 'Segoe UI', 'Nunito', Arial, sans-serif;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
+  padding: 1rem;
 }
-.container {
+
+.page-section {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 600px;
   width: 100%;
-  max-width: 450px;
-  padding: 2rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
-.page-title {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  color: #273383;
-  letter-spacing: 2px;
-}
-.issue-options {
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
-  margin-bottom: 2rem;
-}
-.issue-btn {
-  display: flex;
-  align-items: center;
-  font-size: 1.25rem;
-  padding: 1rem 1.6rem;
-  border-radius: 2rem;
-  border: none;
-  transition: box-shadow 0.2s;
-  cursor: pointer;
-  background: rgba(255,255,255,0.8);
+
+h1, h2, h3, h4 {
+  margin-top: 0;
   font-weight: 600;
-  box-shadow: 0 4px 24px rgba(100,100,150,0.05);
-  position: relative;
-  letter-spacing: .5px;
-}
-.issue-btn .icon {
-  font-size: 1.7rem;
-  margin-right: 1rem;
-}
-.issue-btn.blue { background: linear-gradient(90deg,#78c1ff 80%,#cdfcfc); color: #265cc5; }
-.issue-btn.green { background: linear-gradient(90deg,#a1ffc1 80%,#ade9fb); color: #12845e;}
-.issue-btn.gray { background: linear-gradient(90deg,#cfcfcf 80%,#e4e6ed); color: #5e6a7f;}
-
-.issue-btn:hover, .submit-btn:hover {
-  box-shadow: 0 8px 32px rgba(28,82,162,0.12);
 }
 
-.glass-card {
-  background: rgba(36,44,74,0.16);
-  box-shadow: 0 6px 28px rgba(64,94,146,0.09);
-  border-radius: 1.6rem;
-  padding: 2rem 1rem 1rem 1rem;
-  margin-bottom: 2rem;
-  backdrop-filter: blur(10px);
+input[type="text"],
+input[type="password"],
+select,
+button,
+input[type="file"] {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0 1.2rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
 }
-.form-group {
+
+button {
+  background: #764ba2;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #5a3781;
+}
+
+#logout-btn {
+  background: transparent;
+  border: 2px solid #fff;
+  padding: 0.3rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 0.8rem;
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+.error-msg {
+  color: #f44336;
+  font-weight: bold;
+  margin-top: -1rem;
+}
+
+.filter-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.issues-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #764ba2;
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+}
+
+.issue-item {
+  background: #4a307f;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+  transition: background 0.2s ease;
+}
+
+.issue-item:hover {
+  background: #6d4e9f;
+}
+
+#issue-photo {
+  max-width: 100%;
+  border-radius: 0.7rem;
   margin-bottom: 1rem;
 }
+
 label {
   font-weight: 600;
-  margin-bottom: 0.2rem;
-  display: block;
-  color: #30476b;
-  font-size: 1rem;
 }
-select, input[type="text"], input[type="file"] {
-  width: 90%;
-  padding: 0.7rem;
-  margin-top: 0.2rem;
-  border-radius: 0.8rem;
-  border: none;
-  font-size: 1rem;
-  background: rgba(255,255,255,0.8);
-  color: #465b7c;
-  margin-bottom: 0.2rem;
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-right: 0.5rem;
 }
-.submit-btn, .back-btn, #autofill-btn {
-  display: inline-block;
-  border: none;
-  background: #43e27b;
-  color: #fff;
-  font-weight: 700;
-  border-radius: 2rem;
-  padding: 0.7rem 1.5rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  font-size: 1.1rem;
-  letter-spacing: .4px;
-  margin-right: 1rem;
-  box-shadow: 0 2px 16px rgba(34,208,123,0.07);
-  transition: background 0.2s;
+
+section#analytics-section ul {
+  list-style: none;
+  padding-left: 0;
 }
-.submit-btn:hover, #autofill-btn:hover {
-  background: #1ab059;
-}
-.back-btn {
-  background: #c5d6ef;
-  color: #3767a3;
-  margin-right: 0;
-  margin-left: .6rem;
-}
-.hidden { display: none; }
-#form-title, .ticket-id, .timeline-step span {
-  text-align: center;
-  margin: .5rem 0 .5rem 0;
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-.timeline {
-  margin: 1rem 0 0.7rem 0;
-}
-.timeline-step {
-  background: rgba(255,255,255,0.84);
-  border-radius: 1rem;
-  box-shadow: 0 1px 12px rgba(36,52,74, .07);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  margin: .2rem 0;
-  color: #5575b9;
-}
-.timeline-step.resolved {
-  background: linear-gradient(90deg,#69e1a7 80%,#93f5b5);
-  color: #174836;
-}
-.step-icon {
-  font-size: 1.6rem;
-}
-.update-msg {
-  text-align: center;
-  font-size: 1.01rem;
-  margin-top: 1rem;
-}
-@media (max-width:540px) {
-  .container { max-width: 98vw; padding: 1rem 0.25rem;}
-  .glass-card { padding: 1.2rem 0.2rem; }
+
+section#analytics-section li {
+  background: #4a307f;
+  margin-bottom: 0.5rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
 }
