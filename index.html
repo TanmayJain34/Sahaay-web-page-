@@ -1,106 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SAHAAY - Issue Management</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahaay - Admin Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-  <div id="app">
-    <!-- Login Section -->
-    <section id="login-section" class="page-section">
-      <h1>SAHAAY Login</h1>
-      <form id="login-form">
-        <input type="text" id="username" placeholder="Username" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit">Login</button>
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMzQjgyRjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNWwtNS01IDEuNDEtMS40MUwxMCAxNC4xN2w3LjU5LTcuNTlMMTkgOGwtOSA5eiIvPgo8L3N2Zz4KPC9zdmc+" alt="Sahaay Logo" class="logo">
+        <h1>Sahaay Admin Portal</h1>
+        <p>Urban Issue Reporting & Monitoring System</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </button>
       </form>
-      <div id="login-error" class="error-msg"></div>
-    </section>
-
-    <!-- Dashboard Section -->
-    <section id="dashboard-section" class="page-section hidden">
-      <header>
-        <h2>Dashboard</h2>
-        <button id="logout-btn">Logout</button>
-      </header>
-
-      <!-- Filters -->
-      <div class="filter-container">
-        <input type="text" id="filter-location" placeholder="Filter by Location" />
-        <select id="filter-type">
-          <option value="">Filter by Type</option>
-          <option value="pothole">Pothole</option>
-          <option value="garbage">Garbage</option>
-          <option value="streetlight">Streetlight</option>
-        </select>
-        <select id="filter-status">
-          <option value="">Filter by Status</option>
-          <option value="open">Open</option>
-          <option value="assigned">Assigned</option>
-          <option value="resolved">Resolved</option>
-        </select>
-        <button id="apply-filters-btn">Apply Filters</button>
+      <div class="demo-credentials">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Email: sahaay@gov.in</p>
+        <p>Password: sahaay@123</p>
       </div>
+    </div>
+  </div>
 
-      <!-- Issues List -->
-      <div id="issues-list" class="issues-list">
-        <!-- dynamically populated -->
+  <!-- Main Dashboard -->
+  <div id="dashboard" class="dashboard hidden">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMzQjgyRjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNWwtNS01IDEuNDEtMS40MUwxMCAxNC4xN2w3LjU5LTcuNTlMMTkgOGwtOSA5eiIvPgo8L3N2Zz4KPC9zdmc+" alt="Sahaay" class="header-logo">
+          <div>
+            <h1>Sahaay Admin Portal</h1>
+            <span id="userRole" class="user-role"></span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button id="logoutBtn" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
       </div>
+    </header>
 
-      <!-- Issue Details and Actions -->
-      <div id="issue-details" class="hidden">
-        <h3>Issue Details</h3>
-        <img id="issue-photo" alt="Issue Photo" />
-        <p><strong>Location:</strong> <span id="issue-location"></span></p>
-        <p><strong>Description:</strong> <span id="issue-desc"></span></p>
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-content">
+        <button class="nav-item active" data-tab="dashboard">
+          <i class="fas fa-tachometer-alt"></i>
+          Dashboard
+        </button>
+        <button class="nav-item" data-tab="issues">
+          <i class="fas fa-exclamation-triangle"></i>
+          Issues
+        </button>
+        <button class="nav-item" data-tab="map">
+          <i class="fas fa-map-marked-alt"></i>
+          Map View
+        </button>
+        <button id="analyticsTab" class="nav-item hidden" data-tab="analytics">
+          <i class="fas fa-chart-bar"></i>
+          Analytics
+        </button>
+      </div>
+    </nav>
 
-        <div>
-          <label for="assign-team">Assign to Department/Team:</label>
-          <select id="assign-team">
-            <option value="">Select Team</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="sanitation">Sanitation</option>
-            <option value="lighting">Lighting</option>
-          </select>
-          <button id="assign-btn">Assign</button>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Dashboard Tab -->
+      <section id="dashboardTab" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon pending">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="pendingCount">0</h3>
+              <p>Pending Issues</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon progress">
+              <i class="fas fa-spinner"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="progressCount">0</h3>
+              <p>In Progress</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon resolved">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="resolvedCount">0</h3>
+              <p>Resolved</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon total">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalCount">0</h3>
+              <p>Total Issues</p>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label for="update-status">Update Status:</label>
-          <select id="update-status">
-            <option value="open">Open</option>
-            <option value="assigned">Assigned</option>
-            <option value="resolved">Resolved</option>
-          </select>
-          <button id="update-status-btn">Update Status</button>
+        <div class="recent-issues">
+          <h2>Recent Issues</h2>
+          <div class="table-container">
+            <table class="issues-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="recentIssuesTable">
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        <div>
-          <h4>Resolution Update</h4>
-          <label>
-            <input type="checkbox" id="mark-resolved" /> Mark as Resolved
-          </label>
-          <input type="file" id="resolution-proof" />
-          <button id="save-resolution-btn">Save Resolution</button>
-        </div>
-
-        <button id="back-to-list-btn">Back to List</button>
-      </div>
-
-      <!-- Analytics Section -->
-      <section id="analytics-section" class="hidden">
-        <h3>Analytics</h3>
-        <ul>
-          <li><strong>Average Response Time:</strong> <span id="response-time">3.4 hours</span></li>
-          <li><strong>Hotspot Detection:</strong> <span id="hotspot">Area 5</span></li>
-          <li><strong>Performance Reports:</strong> <span id="performance">Good</span></li>
-        </ul>
       </section>
-    </section>
+
+      <!-- Issues Tab -->
+      <section id="issuesTab" class="tab-content">
+        <div class="issues-header">
+          <h2>All Issues</h2>
+          <div class="issues-controls">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchInput" placeholder="Search issues...">
+            </div>
+            <select id="statusFilter">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+            <select id="typeFilter">
+              <option value="">All Types</option>
+              <option value="pothole">Pothole</option>
+              <option value="garbage">Garbage</option>
+              <option value="streetlight">Streetlight</option>
+            </select>
+            <button id="exportBtn" class="export-btn">
+              <i class="fas fa-download"></i>
+              Export
+            </button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="issues-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="allIssuesTable">
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Map Tab -->
+      <section id="mapTab" class="tab-content">
+        <div class="map-header">
+          <h2>Issue Locations</h2>
+          <div class="map-legend">
+            <div class="legend-item">
+              <span class="legend-color pending"></span>
+              Pending
+            </div>
+            <div class="legend-item">
+              <span class="legend-color progress"></span>
+              In Progress
+            </div>
+            <div class="legend-item">
+              <span class="legend-color resolved"></span>
+              Resolved
+            </div>
+          </div>
+        </div>
+        <div id="map" class="map-container"></div>
+      </section>
+
+      <!-- Analytics Tab (Super Admin Only) -->
+      <section id="analyticsTab" class="tab-content">
+        <div class="analytics-header">
+          <h2>Performance Analytics</h2>
+          <div class="analytics-controls">
+            <select id="cityFilter">
+              <option value="">All Cities</option>
+              <option value="Ranchi">Ranchi</option>
+              <option value="Jamshedpur">Jamshedpur</option>
+              <option value="Dhanbad">Dhanbad</option>
+            </select>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Issues by Status</h3>
+            <canvas id="statusChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Issues by Type</h3>
+            <canvas id="typeChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>City Performance</h3>
+            <canvas id="cityChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Monthly Trends</h3>
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Issue Detail Modal -->
+  <div id="issueModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Issue Details</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="issue-details">
+          <div class="issue-image">
+            <img id="issueImage" src="" alt="Issue Photo">
+          </div>
+          <div class="issue-info">
+            <h3 id="issueTitle"></h3>
+            <p id="issueDescription"></p>
+            <div class="issue-meta">
+              <div class="meta-item">
+                <strong>Type:</strong>
+                <span id="issueType"></span>
+              </div>
+              <div class="meta-item">
+                <strong>Location:</strong>
+                <span id="issueLocation"></span>
+              </div>
+              <div class="meta-item">
+                <strong>Status:</strong>
+                <span id="issueStatus" class="status-badge"></span>
+              </div>
+              <div class="meta-item">
+                <strong>Reported:</strong>
+                <span id="issueDate"></span>
+              </div>
+              <div class="meta-item">
+                <strong>Assigned To:</strong>
+                <span id="issueAssigned"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="issue-actions">
+          <div class="action-group">
+            <label for="statusSelect">Update Status:</label>
+            <select id="statusSelect">
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+          <div class="action-group">
+            <label for="assignSelect">Assign To:</label>
+            <select id="assignSelect">
+              <option value="">Select Officer</option>
+            </select>
+          </div>
+          <div class="action-buttons">
+            <button id="updateIssueBtn" class="btn-primary">Update Issue</button>
+            <button id="contactOfficerBtn" class="btn-secondary">Contact Officer</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="main.js"></script>
+  <script src="data.js"></script>
 </body>
 </html>
